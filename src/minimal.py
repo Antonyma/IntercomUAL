@@ -71,7 +71,7 @@ class Minimal:
         else:
             self._handler = self._record_io_and_play
             self.stream = self.mic_stream
-
+        self.args = parser.parse_known_args()[0]  # Mover aquí la inicialización de args
         #self.input_exhausted = False
 
     def pack(self, chunk):
@@ -519,3 +519,4 @@ if __name__ == "__main__":
         parser.exit("\nSIGINT received")
     finally:
         intercom.print_final_averages()
+
