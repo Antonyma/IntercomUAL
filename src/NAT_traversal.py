@@ -1,9 +1,6 @@
 import stun
-import argparse
 import numpy as np
-import struct
 import minimal 
-import logging
 
 def get_ip_info(stun_host='stun.l.google.com', source_port=4444):
     try:
