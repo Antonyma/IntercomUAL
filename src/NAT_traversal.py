@@ -16,18 +16,16 @@ def get_ip_info(stun_servers):
               f"External IP: {external_ip}\n", 
               f"End-Point: {external_ip}:{external_port}\n", 
               f"NAT type: {nat_type}\n")  
-
+        
     NAT_TYPE()
-
     return nat_type, external_ip, external_port
 
 def NAT_TYPE():
     if all(endPoint == NAT_traversal.endPoints[0] for endPoint in NAT_traversal.endPoints):
-        print("NAT abierto (Full Cone)")
-        print("Puede establecer conexion con otro dispositivo. Para ello ejecute el siguiente comando: python3 NAT-traversal -l \'puerto de escucha\' -a \'ip de destino\' -p \'puerto de destino\'")     
+        print("Full Cone NAT)")
     if all(endPoint != NAT_traversal.endPoints[0] for endPoint in NAT_traversal.endPoints):
-        print("NAT simetrico")
-        print("No puede establecer conexion con otro dispositivo.")
+        print("Symetric NAT")
+        print("Cannot establish connection with another device.")
 
 if __name__ == "__main__": 
     stun_servers = ["stun.l.google.com:4444", "stun1.l.google.com:19302", "stun.l.google.com:19303"]
