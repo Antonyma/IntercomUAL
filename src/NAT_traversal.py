@@ -21,4 +21,3 @@ if __name__ == "__main__":
     minimal.args = minimal.parser.parse_known_args()[0]
     otro = NAT_traversal()
     otro.run()
-
