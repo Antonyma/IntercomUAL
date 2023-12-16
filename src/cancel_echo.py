@@ -2,12 +2,16 @@ import logging
 import numpy as np
 import buffer 
 import minimal
-import argcomplete
 
 class CancelEcho(buffer.Buffering):
-        
+
+    def __init__(self, delay, attenuation):
+        super().__init__()
+        self.delay = delay
+        self.attenuation = attenuation
+
     def unbuffer_next_chunk(self):
-        chunk = self.buffer[self.played_chunk_number % self.cells_in_buffer]
+        chunk = self._buffer[self.played_chunk_number % self.cells_in_buffer]
         return chunk
 
     def record_io_and_play(self, indata, outdata, frames, time, status):
@@ -33,7 +37,7 @@ if __name__ == "__main__":
     if minimal.args.show_stats or minimal.args.show_samples:
         intercom = buffer.Buffering__verbose()
     else:
-        intercom = CancelEcho(50, 0.2)
+        intercom = CancelEcho(20, 0.2)
     try:
         intercom.run()
     except KeyboardInterrupt:
