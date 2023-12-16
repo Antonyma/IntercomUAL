@@ -9,6 +9,7 @@ from temporal_overlapped_DWT_coding import Temporal_Overlapped_DWT
 from temporal_overlapped_DWT_coding import Temporal_Overlapped_DWT__verbose
 
 class Advanced_ToH(Temporal_Overlapped_DWT):
+    
     def calculate_quantization_steps(self, max_q):
         def calc(f):
             return 3.64 * (f / 1000) ** (-0.8) - 6.5 * math.exp((-0.6) * (f / 1000 - 3.3) ** 2) + 10 ** (-3) * (f / 1000) ** 4
@@ -28,9 +29,7 @@ class Advanced_ToH(Temporal_Overlapped_DWT):
         average_SPLs.insert(0, mean / f)
 
         min_SPL, max_SPL = np.min(average_SPLs), np.max(average_SPLs)
-        quantization_steps = [
-            round((spl - min_SPL) / (max_SPL - min_SPL) * (max_q - 1) + 1) for spl in average_SPLs
-        ]
+        quantization_steps = [round((spl - min_SPL) / (max_SPL - min_SPL) * (max_q - 1) + 1) for spl in average_SPLs]
 
         return quantization_steps
 
@@ -55,12 +54,10 @@ class Advanced_ToH(Temporal_Overlapped_DWT):
 
             if perceptible:
                 break
-
             qss_values.append(1.0)  # Placeholder, replace with the actual QSS value
-
         return qss_values
 
-    def is_noise_perceptible(self, subband_wavelet_filtered, threshold_snr=20.0):
+    def is_noise_perceptible(self, subband_wavelet_filtered, threshold_snr=10.0):
         # Calcula la energía de la señal y del ruido
         signal_energy = np.sum(subband_wavelet_filtered**2)
         noise_energy = np.sum((subband_wavelet_filtered - subband_wavelet_filtered.mean())**2)
@@ -71,8 +68,7 @@ class Advanced_ToH(Temporal_Overlapped_DWT):
         # Determina si el ruido es perceptible comparando con un umbral
         return snr < threshold_snr
 
-
-    def calculate_toh_curve(length, sample_rate=44100):
+    def calculate_toh_curve(self, length):
         # Tabla de curva ToH precalculada
         toh_curve = np.array([
             [-31.6, -27.2, -23.0, -19.1, -15.9, -13.0, -10.3, -8.1, -6.2, -3.6],
@@ -83,6 +79,8 @@ class Advanced_ToH(Temporal_Overlapped_DWT):
         toh_curve -= np.min(toh_curve)
         toh_curve /= np.max(toh_curve)
 
+        # Ajusta la longitud de la curva ToH para que coincida con la longitud de la señal de audio
+        toh_curve = np.interp(np.linspace(0, 1, length), np.linspace(0, 1, len(toh_curve)), toh_curve)
         return toh_curve
 
 class Advanced_ToH__verbose(Advanced_ToH, Temporal_Overlapped_DWT__verbose):
