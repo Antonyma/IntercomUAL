@@ -1,4 +1,3 @@
-import logging
 import numpy as np
 import buffer 
 import minimal
@@ -37,7 +36,7 @@ if __name__ == "__main__":
     if minimal.args.show_stats or minimal.args.show_samples:
         intercom = buffer.Buffering__verbose()
     else:
-        intercom = CancelEcho(20, 0.2)
+        intercom = CancelEcho(100, 0.2)
     try:
         intercom.run()
     except KeyboardInterrupt:
